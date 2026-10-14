@@ -210,7 +210,51 @@ footer .g{color:var(--green)}
   *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
   .reveal{opacity:1;transform:none}
 }
+/* hero profile picture */
+.hero-side{display:flex;flex-direction:column;align-items:center;gap:28px}
+.hero-side .hero-card{width:100%}
+.avatar{position:relative;width:min(280px,70vw);aspect-ratio:1}
+.avatar::before{content:"";position:absolute;inset:-6px;border-radius:50%;background:conic-gradient(from 0deg,var(--cyan),var(--green),transparent 45%,var(--cyan));animation:spin 6s linear infinite}
+.avatar::after{content:"";position:absolute;inset:-6px;border-radius:50%;box-shadow:0 0 55px rgba(0,240,255,.35);pointer-events:none}
+.avatar img{position:relative;z-index:1;width:100%;height:100%;border-radius:50%;object-fit:cover;border:6px solid var(--bg);background:var(--bg2);display:block}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* project images */
+.card{overflow:hidden}
+.thumb{order:-1;position:relative;margin:-28px -28px 22px;aspect-ratio:16/10;overflow:hidden;cursor:zoom-in;background:var(--bg2);border-bottom:1px solid var(--border)}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease}
+.card:hover .thumb img{transform:scale(1.06)}
+.thumb::after{content:"View gallery";position:absolute;inset:0;display:grid;place-items:center;font-family:var(--mono);font-size:.85rem;color:var(--cyan);background:rgba(10,15,29,.6);opacity:0;transition:.3s}
+.thumb:hover::after,.thumb:focus-visible::after{opacity:1}
+.thumb .count{position:absolute;right:12px;top:12px;z-index:2;font-family:var(--mono);font-size:.7rem;padding:4px 10px;border-radius:50px;background:rgba(10,15,29,.8);border:1px solid var(--border);color:var(--green)}
+
+/* lightbox */
+.lb{position:fixed;inset:0;z-index:200;background:rgba(5,8,16,.94);display:flex;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(8px)}
+.lb[hidden]{display:none}
+.lb figure{max-width:min(1000px,86vw);text-align:center}
+.lb img{max-width:100%;max-height:76vh;border-radius:12px;border:1px solid var(--border);box-shadow:0 0 60px rgba(0,240,255,.2)}
+.lb figcaption{margin-top:14px;font-family:var(--mono);font-size:.85rem;color:var(--muted)}
+.lb button{position:absolute;background:rgba(10,15,29,.85);border:1px solid var(--border);color:var(--cyan);border-radius:50%;width:48px;height:48px;font-size:1.6rem;cursor:pointer;transition:.25s;line-height:1}
+.lb button:hover{border-color:var(--cyan);box-shadow:0 0 18px rgba(0,240,255,.45)}
+.lb-x{top:20px;right:20px}.lb-nav.prev{left:20px;top:50%}.lb-nav.next{right:20px;top:50%}
+@media(max-width:900px){.hero-side{order:-1}.avatar{width:190px}}
 </style>
+
+<script>
+/* Placeholder generators: shown automatically whenever a real image file is missing */
+function phSrc(label,n){
+  n=n||1;var a=n%2?'#00f0ff':'#00ff66',b=n%2?'#0a1a3a':'#07261a';
+  label=String(label).replace(/&/g,'and').replace(/</g,'');
+  var s="<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 500'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='"+b+"'/><stop offset='1' stop-color='#0a0f1d'/></linearGradient><pattern id='p' width='40' height='40' patternUnits='userSpaceOnUse'><path d='M40 0H0V40' fill='none' stroke='"+a+"' stroke-opacity='.13'/></pattern></defs><rect width='800' height='500' fill='url(#g)'/><rect width='800' height='500' fill='url(#p)'/><rect x='60' y='60' width='680' height='380' rx='14' fill='none' stroke='"+a+"' stroke-opacity='.5' stroke-width='2'/><circle cx='90' cy='92' r='6' fill='#ff5f56'/><circle cx='112' cy='92' r='6' fill='#ffbd2e'/><circle cx='134' cy='92' r='6' fill='#27c93f'/><line x1='60' y1='118' x2='740' y2='118' stroke='"+a+"' stroke-opacity='.3'/><text x='400' y='255' text-anchor='middle' font-family='monospace' font-size='34' font-weight='700' fill='"+a+"'>"+label+"</text><text x='400' y='300' text-anchor='middle' font-family='monospace' font-size='18' fill='#9aa7c2'>PLACEHOLDER IMAGE "+n+"</text></svg>";
+  return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(s);
+}
+function ph(img,label,n){img.onerror=null;img.src=phSrc(label,n);}
+function phProfile(img){
+  img.onerror=null;
+  var s="<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#0e2a4a'/><stop offset='1' stop-color='#0a0f1d'/></linearGradient></defs><rect width='400' height='400' fill='url(#g)'/><circle cx='200' cy='155' r='70' fill='#00f0ff' fill-opacity='.85'/><path d='M60 400c0-90 62-140 140-140s140 50 140 140z' fill='#00ff66' fill-opacity='.75'/><text x='200' y='385' text-anchor='middle' font-family='monospace' font-size='16' fill='#f4f8ff' fill-opacity='.8'>ADD images/profile.jpg</text></svg>";
+  img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(s);
+}
+</script>
 </head>
 <body>
 
@@ -255,6 +299,10 @@ footer .g{color:var(--green)}
         <a href="mailto:josephjustne284@gmail.com" aria-label="Email"><svg viewBox="0 0 24 24"><path d="M2 5h20v14H2zm2 2v.5l8 5 8-5V7zm16 3-8 5-8-5V17h16z"/></svg></a>
       </div>
     </div>
+    <div class="hero-side">
+    <div class="avatar reveal" style="--d:.3s">
+      <img src="images/profile.jpg" alt="Portrait of Joseph Sandeep Justine" width="280" height="280" onerror="phProfile(this)">
+    </div>
     <div class="hero-card reveal" style="--d:.4s">
       <div class="bar"><span></span><span></span><span></span><em>whoami.json</em></div>
       <div class="code">
@@ -268,6 +316,7 @@ footer .g{color:var(--green)}
 &nbsp;&nbsp;status: <span class="s">"building"</span><br>
 };
       </div>
+    </div>
     </div>
   </div>
 </section>
@@ -326,6 +375,7 @@ footer .g{color:var(--green)}
       <article class="glass card" data-c="fullstack">
         <div class="cat">Full Stack Development</div>
         <h3>Nexus Enterprise Suite</h3>
+        <div class="thumb" data-slug="nexus-suite" data-n="3" data-title="Nexus Enterprise Suite"></div>
         <p>A modular enterprise platform covering inventory, billing, HR and reporting, with role-based access and a responsive web dashboard for day-to-day operations.</p>
         <div class="tech"><span>Laravel</span><span>Node.js</span><span>TypeScript</span><span>MySQL</span><span>REST API</span></div>
         <ul class="metrics"><li>Consolidated multiple manual workflows into one system</li><li>Role-based access across departments</li><li>Real-time dashboards and exportable reports</li></ul>
@@ -335,6 +385,7 @@ footer .g{color:var(--green)}
       <article class="glass card" data-c="fullstack">
         <div class="cat">Full Stack Development</div>
         <h3>Nexus Mobile App</h3>
+        <div class="thumb" data-slug="nexus-mobile" data-n="3" data-title="Nexus Mobile App"></div>
         <p>Cross-platform companion app that gives staff and customers secure, on-the-go access to the Nexus platform, including push notifications and offline-friendly screens.</p>
         <div class="tech"><span>Flutter</span><span>React Native</span><span>REST API</span><span>JWT</span></div>
         <ul class="metrics"><li>Single codebase for Android and iOS</li><li>Token-based secure authentication</li><li>Optimised for low-bandwidth networks</li></ul>
@@ -344,6 +395,7 @@ footer .g{color:var(--green)}
       <article class="glass card" data-c="security">
         <div class="cat">Cyber Security &amp; Compliance</div>
         <h3>ISO 27001 &amp; IBM Security Framework</h3>
+        <div class="thumb" data-slug="security-framework" data-n="2" data-title="ISO 27001 and IBM Security"></div>
         <p>Security programme blending ISO/IEC 27001 controls with IBM cybersecurity practices: risk assessment, policy development, gap analysis, vulnerability review and incident response planning.</p>
         <div class="tech"><span>ISO 27001</span><span>Risk Assessment</span><span>SIEM Concepts</span><span>Policy &amp; Audit</span></div>
         <ul class="metrics"><li>Documented risk register and treatment plan</li><li>Control mapping to Annex A</li><li>Staff awareness and incident playbooks</li></ul>
@@ -353,6 +405,7 @@ footer .g{color:var(--green)}
       <article class="glass card" data-c="devops">
         <div class="cat">DevOps &amp; Server Management</div>
         <h3>CI/CD Pipelines</h3>
+        <div class="thumb" data-slug="cicd-pipelines" data-n="3" data-title="CI/CD Pipelines"></div>
         <p>Automated build, test and deploy pipelines using containers and self-hosted platforms, with zero-downtime releases, environment separation and one-click rollbacks.</p>
         <div class="tech"><span>Docker</span><span>Coolify</span><span>GitHub Actions</span><span>Linux</span><span>Nginx</span></div>
         <ul class="metrics"><li>Push-to-deploy workflow for web apps</li><li>Automatic SSL and reverse proxying</li><li>Repeatable, version-controlled environments</li></ul>
@@ -362,6 +415,7 @@ footer .g{color:var(--green)}
       <article class="glass card" data-c="devops security">
         <div class="cat">DevOps &amp; Server Management</div>
         <h3>Acronis Backup Automation</h3>
+        <div class="thumb" data-slug="acronis-backup" data-n="2" data-title="Acronis Backup Automation"></div>
         <p>Scheduled, monitored cloud backup and recovery for servers and endpoints using Acronis Cloud Cyber Protect, with retention policies and tested restore procedures.</p>
         <div class="tech"><span>Acronis</span><span>Backup Policies</span><span>Disaster Recovery</span><span>Monitoring</span></div>
         <ul class="metrics"><li>Automated daily backup schedules</li><li>Regular restore testing and reporting</li><li>Reduced recovery time for critical systems</li></ul>
@@ -371,6 +425,7 @@ footer .g{color:var(--green)}
       <article class="glass card" data-c="database">
         <div class="cat">Database Management</div>
         <h3>High-Performance Relational DB Optimization</h3>
+        <div class="thumb" data-slug="database-optimization" data-n="2" data-title="Database Optimization"></div>
         <p>Schema redesign, indexing strategy, query tuning and backup planning for busy relational databases, improving response times and data integrity.</p>
         <div class="tech"><span>MySQL</span><span>PostgreSQL</span><span>Indexing</span><span>Query Tuning</span><span>Replication</span></div>
         <ul class="metrics"><li>Slow queries profiled and rewritten</li><li>Normalised schemas with integrity constraints</li><li>Automated backups with point-in-time recovery</li></ul>
@@ -380,6 +435,7 @@ footer .g{color:var(--green)}
       <article class="glass card" data-c="ai">
         <div class="cat">AI Consultant</div>
         <h3>Intelligent Workflow Automation</h3>
+        <div class="thumb" data-slug="ai-workflow" data-n="3" data-title="Workflow Automation"></div>
         <p>Automations that remove repetitive admin work: intake, triage, reporting and follow-ups, connecting business tools through APIs and AI-assisted decision steps.</p>
         <div class="tech"><span>Python</span><span>n8n / Zapier</span><span>Webhooks</span><span>WhatsApp API</span></div>
         <ul class="metrics"><li>Hours of manual work saved each week</li><li>Human-in-the-loop approval steps</li><li>Audit trail for every automated action</li></ul>
@@ -389,6 +445,7 @@ footer .g{color:var(--green)}
       <article class="glass card" data-c="ai">
         <div class="cat">AI Consultant</div>
         <h3>LLM Integration Suite</h3>
+        <div class="thumb" data-slug="llm-suite" data-n="3" data-title="LLM Integration Suite"></div>
         <p>Reusable toolkit to embed large language models into business apps: chat assistants, document Q&amp;A with retrieval, summarisation and guardrails for safe use.</p>
         <div class="tech"><span>LLM APIs</span><span>RAG</span><span>Python</span><span>TypeScript</span><span>Vector DB</span></div>
         <ul class="metrics"><li>Retrieval over private company documents</li><li>Prompt and output safety guardrails</li><li>Plug-in connectors for existing systems</li></ul>
@@ -483,6 +540,13 @@ footer .g{color:var(--green)}
 <footer>
   <div class="container"><span class="g">&copy; 2026 Joseph Sandeep Justine.</span> Compiled successfully.</div>
 </footer>
+
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="Project image gallery">
+  <button class="lb-x" id="lbX" aria-label="Close">&times;</button>
+  <button class="lb-nav prev" id="lbP" aria-label="Previous image">&#8249;</button>
+  <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
+  <button class="lb-nav next" id="lbN" aria-label="Next image">&#8250;</button>
+</div>
 
 <div class="bgctl"><label for="op">data stream</label><input type="range" id="op" min="0" max="100" value="35"></div>
 
@@ -606,6 +670,46 @@ tabs.forEach(t => t.onclick = () => {
     c.classList.toggle('hide', !show);
     if (show){ c.style.animation = 'none'; void c.offsetWidth; c.style.animation = `rise .5s ${(i++)*.07}s both`; }
   });
+});
+
+/* ---------- project images + lightbox ----------
+   Put real files in /images/projects/ named <slug>-1.jpg, <slug>-2.jpg ...
+   e.g. nexus-suite-1.jpg. Missing files fall back to placeholders. */
+const lb = $('#lb'), lbImg = $('#lbImg'), lbCap = $('#lbCap');
+let gs = '', gn = 1, gi = 1, gt = '';
+document.querySelectorAll('.thumb').forEach(t => {
+  const slug = t.dataset.slug, n = +t.dataset.n || 1, title = t.dataset.title;
+  const img = new Image();
+  img.loading = 'lazy'; img.alt = title + ' preview';
+  img.onerror = () => ph(img, title.toUpperCase().slice(0,26), 1);
+  img.src = `images/projects/${slug}-1.jpg`;
+  t.prepend(img);
+  const c = document.createElement('span');
+  c.className = 'count'; c.textContent = n + (n > 1 ? ' images' : ' image');
+  t.appendChild(c);
+  t.tabIndex = 0; t.setAttribute('role','button'); t.setAttribute('aria-label','Open gallery: ' + title);
+  const open = () => { gs = slug; gn = n; gi = 1; gt = title; showLB(); lb.hidden = false; document.body.style.overflow = 'hidden'; };
+  t.onclick = open;
+  t.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } };
+});
+function showLB(){
+  const i = gi;
+  lbImg.onerror = () => ph(lbImg, gt.toUpperCase().slice(0,26), i);
+  lbImg.src = `images/projects/${gs}-${i}.jpg`;
+  lbImg.alt = `${gt} image ${i}`;
+  lbCap.textContent = `${gt}  |  ${i} / ${gn}`;
+}
+function stepLB(d){ gi = ((gi - 1 + d + gn) % gn) + 1; showLB(); }
+function closeLB(){ lb.hidden = true; document.body.style.overflow = ''; }
+$('#lbX').onclick = closeLB;
+$('#lbP').onclick = () => stepLB(-1);
+$('#lbN').onclick = () => stepLB(1);
+lb.addEventListener('click', e => { if (e.target === lb) closeLB(); });
+addEventListener('keydown', e => {
+  if (lb.hidden) return;
+  if (e.key === 'Escape') closeLB();
+  if (e.key === 'ArrowLeft') stepLB(-1);
+  if (e.key === 'ArrowRight') stepLB(1);
 });
 
 /* ---------- terminal ---------- */
